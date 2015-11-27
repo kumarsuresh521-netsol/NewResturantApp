@@ -145,12 +145,14 @@
     
     
 .kumar-maneuver {
-    background-image: url(../img/maneuvers.png) !important; 
-    background-size: 19px 630px;
+    background: url(../img/maneuvers.png) no-repeat right 6px #EF473A !important;
     position: absolute;
-    left: 0;
-    width: 16px;
+    right: 0;
     height: 16px;
+    font-size: 13px;
+    margin: 0;
+    line-height: 6px;
+    float: left;
 }
 
 

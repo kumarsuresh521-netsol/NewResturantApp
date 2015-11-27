@@ -8,7 +8,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('MapCtrl', function($scope, $ionicHistory, $ionicLoading, $filter , $ionicNavBarDelegate, $timeout, $state) { console.log("in map ctrl");
+.controller('MapCtrl', function($scope, $ionicHistory, $ionicLoading, $filter , $ionicNavBarDelegate, $timeout, $state) {
     
     
     $ionicHistory.nextViewOptions({
@@ -55,6 +55,8 @@ angular.module('starter.controllers', [])
       function initialize() {
         
         loading();
+        
+        
 
         var start; var destination; var route;
         document.getElementById("footerTabsOne").style.display = 'inline-flex';
@@ -209,16 +211,16 @@ angular.module('starter.controllers', [])
         
         
          var rightpanel = angular.element( document.querySelector( '#right-panel' ) );
-        rightpanel.html(''); 
+        rightpanel.html(' '); 
         
         var directiontt = angular.element( document.querySelector( '#directiontt' ) );
-        directiontt.html(''); 
+        directiontt.html(' '); 
                            
         var directiontttt = angular.element( document.querySelector( '#directiontttt' ) );
-        directiontttt.html(''); 
+        directiontttt.html('  '); 
                                
         var directionthen = angular.element( document.querySelector( '#directionthen' ) );
-        directionthen.html('');
+        directionthen.html(' ');
         
       function drawRoute(start, destination){ //alert("1");
       
@@ -308,41 +310,19 @@ angular.module('starter.controllers', [])
         $scope.searchNewsTextbtn = false;
         $scope.searchNewsText = true;
         
-        var sevt = start;
-        var devt = destination;
         
-        var slat = sevt.lat();
-        var slng = sevt.lng();
-        var dlat = devt.lat();
-        var dlng = devt.lng();
         
           //  $timeout(abc, 3000);
       
       $scope.GoNavigation = function() {
         loading();
-        var navPref = localStorage.getItem('navigationPreference');
-        if(navPref == 'gmap'){
-            abc();
-        } else {
-            startNavigation(start, destination, route);
-        }        
+        
+        startNavigation(start, destination, route);
+
+      
       }; 
         
-        function abc(){
-            if(slat && slng && dlat && dlng){
-                launchnavigator.navigate(
-              
-              [dlat, dlng],
-              [slat, slng],
-              function(success){ console.log(success);
-                 // alert("Plugin success");
-              },
-              function(error){
-              }); 
-            } else {
-                alert("Please select a route to navigate.");
-            }
-        }
+       
         
        // $ionicLoading.hide();
         
@@ -377,14 +357,44 @@ angular.module('starter.controllers', [])
        
        function startNavigation(start, destination, route){  console.log(route);
             
-            if(start && destination && route){
+             if(watchID){
+                navigator.geolocation.clearWatch(watchID);
+               }
+           
+            var navPref = localStorage.getItem('navigationPreference');
+            
+            if(navPref == 'gmap'){
+                    var sevt = start;
+                    var devt = destination;
+                    
+                    var slat = sevt.lat();
+                    var slng = sevt.lng();
+                    var dlat = devt.lat();
+                    var dlng = devt.lng();
+                if(slat && slng && dlat && dlng){
+                    launchnavigator.navigate(
+                  
+                  [dlat, dlng],
+                  [slat, slng],
+                  function(success){ console.log(success);
+                     // alert("Plugin success");
+                  },
+                  function(error){
+                  }); 
+                } else {
+                    alert("Please select a route to navigate.");
+                }
+                
+            }else if(start && destination && route){
             document.getElementById("footerTabsOne").style.display = 'none';
             document.getElementById("footerTabsTwo").style.display = 'inline-flex';
             
             var footerTabsThree = angular.element( document.querySelector( '#footerTabsThree' ) );
             footerTabsThree.html('<div style="">'+route.legs[0].duration.text+' - '+route.legs[0].distance.text+'</div>');
        
-          watchID = navigator.geolocation.watchPosition(onSuccess, onError, { maximumAge: 3000000, timeout: 5000000, enableHighAccuracy: true });
+          
+       
+          var watchID = navigator.geolocation.watchPosition(onSuccess, onError, { maximumAge: 3000000, timeout: 5000000, enableHighAccuracy: true });
            //navigator.geolocation.clearWatch(watchID);
            function onError(){
             alert("error");
@@ -421,7 +431,6 @@ angular.module('starter.controllers', [])
                    var mmn = route.legs[0].steps[ddd1].distance.value;
 
                     if(distance212 <= 15){
-                        
                         if(ddl == 1){
                             ddd1 = ddd1 + 1;
                             ddl = 0;    
@@ -444,9 +453,9 @@ angular.module('starter.controllers', [])
                    directiontt.html(troute.distance.text + '<br/>'+troute.duration.text);
                    
                    directionthen = angular.element( document.querySelector( '#directionthen' ) );
-                  // directionthen.html('<div class="kumar-maneuver kumar-'+route.legs[0].steps[ddd1+1].maneuver+'" style="position: absolute; z-index: 999; top: 0px; right: 0px; padding: 5px 25px 5px 5px; border: 1px solid #C72424; background: #EF473A; color: #fff;">'+$filter('number')(distance212, 0)+'m Then </div>');
+                   directionthen.html('<div class="kumar-maneuver kumar-'+route.legs[0].steps[ddd1+1].maneuver+'" style="position: absolute; z-index: 999; top: 0px; right: 0px; padding: 10px 24px 14px 8px; border: 1px solid #C72424;  color: #fff;">'+$filter('number')(distance212, 0)+'m Then </div>');
                   
-                   directionthen.html('<div style="position: absolute; z-index: 999; top: 0px; right: 0px; padding: 5px 25px 5px 5px; border: 1px solid #C72424; background: #EF473A; color: #fff;">'+$filter('number')(distance212, 0)+'m Then '+route.legs[0].steps[ddd1+1].instructions+'</div>');
+                  // directionthen.html('<div class="kumar-maneuver kumar-'+route.legs[0].steps[ddd1+1].maneuver+'" style="position: absolute; z-index: 999; top: 0px; right: 0px; padding: 5px 25px 5px 5px; border: 1px solid #C72424; background: #EF473A; color: #fff;">'+$filter('number')(distance212, 0)+'m Then </div>');
             }
             
             } else {
@@ -459,7 +468,9 @@ angular.module('starter.controllers', [])
                 initialize(); 
             }
         
-        
+            $scope.$on('$ionicView.beforeLeave', function(){ //alert("b");
+                  navigator.geolocation.clearWatch(watchID);
+             });
        }
 
       // Adds a marker to the map.
